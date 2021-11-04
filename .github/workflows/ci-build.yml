@@ -50,9 +50,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags:
-          - lkravi/golang-test:${{ steps.prep.outputs.VERSION }}
-          - lkravi/golang-test:${{ steps.prep.outputs.BUILD_DATE }}
+        tags: lkravi/golang-test:${{ steps.prep.outputs.VERSION }}, lkravi/golang-test:${{ steps.prep.outputs.BUILD_DATE }}
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
