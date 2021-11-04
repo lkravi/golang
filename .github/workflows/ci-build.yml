@@ -17,7 +17,7 @@ jobs:
       id: prep
       run: |
           VERSION=${GITHUB_SHA::8}
-          echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H-%M-%SZ')
           echo ::set-output name=VERSION::${VERSION}
 
     - name: Check Out Repo
