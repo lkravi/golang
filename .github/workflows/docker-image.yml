@@ -23,7 +23,7 @@ jobs:
       
     - 
       name: Verify Docker User
-      run: echo S{{ secrets.DOCKER_HUB_USERNAME }}
+      run: echo ${{ secrets.DOCKER_HUB_USERNAME }}
     
     - 
       name: Login to Docker Hub
