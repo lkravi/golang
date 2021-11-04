@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-test-deployment
+  labels:
+    app: golang-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: golang-webserver
+  template:
+    metadata:
+      labels:
+        app: golang-webserver
+    spec:
+      containers:
+      - name: golang-webserver-container
+        image: lkravi/golang-test
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golang-test-service
+spec:
+  selector:
+    app: golang-webserver
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

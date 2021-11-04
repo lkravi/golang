@@ -5,7 +5,7 @@ ADD ./ /build
 RUN apk update --no-cache
 RUN apk add git
 RUN go build -o golang-test  .
-
+# Can run smoke unit test for build verification
 
 FROM alpine:3.14
 WORKDIR /app
