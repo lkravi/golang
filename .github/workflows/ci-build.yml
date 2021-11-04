@@ -1,10 +1,10 @@
-name: Docker Image CI
+name: CI Artifact Build
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - develop
+      - '^release'
 
 jobs:
 
@@ -16,13 +16,9 @@ jobs:
     - name: Preparation
       id: prep
       run: |
-          REGISTRY="ghcr.io"
-          IMAGE="lkravi/golang-test"
-          TAGS="${IMAGE}:${{ github.sha }}"
-          if [[ $GITHUB_REF == ref/head/main ]]; then
-            TAGS="${TAGS},${IMAGE}:latest"
-          fi
-          echo ::set-output name=tags::${TAGS,,}
+          VERSION=${GITHUB_SHA::8}
+          echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo ::set-output name=VERSION::${VERSION}
 
     - name: Check Out Repo
       uses: actions/checkout@v2
@@ -54,4 +50,9 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ steps.prep.outputs.tags }}
+        tags:
+          - lkravi/golang-test:${{ steps.prep.outputs.VERSION }}
+          - lkravi/golang-test:${{ steps.prep.outputs.BUILD_DATE }}
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
