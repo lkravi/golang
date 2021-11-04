@@ -48,3 +48,6 @@ kubectl apply -f k8s/deployment.yaml
 #Check your service locally using port-forwading
 kubectl port-forward service/golang-test-service 8000:80
 ```
+
+## Additional Notes
+SonarCloud : https://sonarcloud.io/summary/overall?id=lkravi-golang
