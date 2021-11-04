@@ -16,12 +16,9 @@ jobs:
 
     - shell: bash
       name: Docker login
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-        DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       run: |
-        echo ${{ DOCKER_USERNAME }} | sed 's/./& /g'
-        echo ${{ DOCKER_ACCESS_TOKEN }} | docker login -u $DOCKER_USERNAME --password-stdin
+        echo ${{ secrets.DOCKER_HUB_USERNAME }} | sed 's/./& /g'
+        echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
         
     - name: Check Out Repo
       uses: actions/checkout@v2
