@@ -51,3 +51,63 @@ kubectl port-forward service/golang-test-service 8000:80
 
 ## Additional Notes
 SonarCloud : https://sonarcloud.io/summary/overall?id=lkravi-golang
+
+
+## Ideal CI/CD Pipeline
+
+![Alt text](/doc_img/ci-cd-ideal.png?raw=true "Ideal CI/CD Pipleline")
+
+### 01 - PR build and CI build on merge
+
+* Run Unit tests
+* Static code analysis
+  - SonarQube
+    - Inspection of code quality to perform review to detect code smells, security vulnerabilities and bugs.
+  - Fortify / CheckMarks
+    - Static application security testing tool for scan security vulnerabilities.
+  - Lint Tools
+    - Lint tool used to check for programmatic and stylistic errors.
+* Build failure notifications / JIRA ticket upgrade etc.
+* Build artefacts on merge builds. tag them as snapshot/dev and upload to artefact repository.
+* Deploy that artefact to development environment.
+
+Pull requests merged after quality gate checks and code review approvals.
+
+### 02 - Release branch builds
+
+* Run Unit tests
+* Static code analysis
+  - Refer step #1 for more detail
+* Dynamic code analysis
+  - Fortify Webinspect / App Spider
+    - Dynamic application security testing tool that identifies application vulnerabilities in deployed web application and services.
+* Build artefacts on merge builds, tag them with correct version (git tags) and upload to artefact repository.
+* Artefact analysis
+  - Twistlock / Trivy / Clair
+    - Vulnerability scanners for container images.
+  - Nexus IQ
+    - Policy violations, Security Issues, License analysis
+* Deploy that artefacts to Test Environment.
+
+When feature completed or when development branch needed to work on next release changes. we need to create a release branch.
+Release branch builds will create versioned artefact which can promote across Test, UAT, Production based on verification success.
+
+### 03 - Continuous deployment
+
+* Deploy to Staging and Production on demand using push button deployments.
+  - Promote artefacts to Staging/UAT and Production environments using continuous deployment mechanisms.
+    - Can use specialised tools like GitOPS (Flux, ArgoCD), GoCD for continuous deployment.
+    - Use Infrastructure as code scripts to maintain environment states/resources.
+
+Deployment artefacts are configured to take environment variable based parameters/ k8s cluster based secrets and config maps to support different environment configurations.
+
+![Alt text](/doc_img/k8-cluster.png?raw=true "Ideal CI/CD Pipleline")
+
+* Application configurations are stored in config maps.
+* Application sensitive information stored in cluster secrets.
+* Each pods have health-check routes and deployments configured Kubernates pod health-checks.
+* Ingress proxy(ngix, traefik) is configured to handle and route external requests to correct services.
+  - In this setup TLS termination happen in Load Balancer level.
+  - However based on the requirement if we need to manage our own cert-manager and TLS termination inside the cluster. It can be done using a tool like jetstack cert manager.
+* RABC configured to control resources changes/ unauthorised access to cluster.
+* Rolling released based deployment ensure zero outage deployments.
