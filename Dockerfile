@@ -1,6 +1,6 @@
 FROM golang:alpine as builder
 ENV GO111MODULE=on
-WORKDIR /builder
+WORKDIR /build
 ADD ./ /build
 RUN apk update --no-cache
 RUN apk add git
