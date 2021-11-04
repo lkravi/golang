@@ -20,6 +20,10 @@ jobs:
     -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+      
+    - 
+      name: Verify Docker User
+      run: echo S{{ secrets.DOCKER_HUB_USERNAME }}
     
     - 
       name: Login to Docker Hub
