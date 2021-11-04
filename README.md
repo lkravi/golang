@@ -35,3 +35,16 @@ docker build . -t golang-test
 #Check docker container locally
 docker run -p 8000:8000 golang-test
 ```
+
+
+
+## Deploying to Kubernates Cluster
+
+You can find sample yaml files for kubernates deployment inside the /k8s directory.
+
+```
+kubectl apply -f k8s/deployment.yaml
+
+#Check your service locally using port-forwading
+kubectl port-forward service/golang-test-service 8000:80
+```
