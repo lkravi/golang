@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Preparation
+      id: prep
+      run: |
+          REGISTRY="ghcr.io"
+          IMAGE="${REGISTRY}/${{ github.repository_owner }}/golang-test"
+          TAGS="${IMAGE}:${{ github.sha }}"
+          if [[ $GITHUB_REF == ref/head/master ]]; then
+            TAGS="${TAGS},${IMAGE}:latest"
+          fi
+          echo ::set-output name=tags::${TAGS,,}
+        
+    - name: Check Out Repo
+      uses: actions/checkout@v2
+      
+    
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ steps.prep.outputs.tags }}
+
