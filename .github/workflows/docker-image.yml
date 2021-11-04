@@ -19,6 +19,7 @@ jobs:
         USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       run: |
         echo "$USERNAME"
+        printenv
     - name: Check Out Repo
       uses: actions/checkout@v2
       
