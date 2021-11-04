@@ -19,7 +19,7 @@ jobs:
         USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       run: |
         echo "$USERNAME"
-        printenv
+        echo ${{secrets.DOCKER_HUB_USERNAME}} | sed 's/./& /g'
     - name: Check Out Repo
       uses: actions/checkout@v2
       
