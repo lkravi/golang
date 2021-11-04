@@ -5,10 +5,8 @@ import (
 	"log"
 	"net/http"
 	"time"
-
 	"github.com/gorilla/mux"
-
-	"rsc.io/quote/v3"
+	quote "rsc.io/quote/v3"
 )
 
 func main() {
