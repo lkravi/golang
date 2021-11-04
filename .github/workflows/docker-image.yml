@@ -13,12 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-#     - shell: bash
-#       name: Docker login
-#       run: |
-#         echo ${{ secrets.DOCKER_HUB_USERNAME }} | sed 's/./& /g'
-#         docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Preparation
+      id: prep
+      run: |
+          REGISTRY="ghcr.io"
+          IMAGE="${REGISTRY}/${{ github.repository_owner }}/golang-test"
+          TAGS="${IMAGE}:${{ github.sha }}"
+          if [[ $GITHUB_REF == ref/head/master ]]; then
+            TAGS="${TAGS},${IMAGE}:latest"
+          fi
+          echo ::set-output name=tags::${TAGS,,}
         
     - name: Check Out Repo
       uses: actions/checkout@v2
@@ -37,5 +41,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: lkravi/golang-test:$(date +'%S')
+        tags: ${{ steps.prep.outputs.tags }}
 
