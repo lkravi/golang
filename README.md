@@ -10,7 +10,7 @@ This is a sample sample repo will explain how you build simple golang app locall
 
 Changing localhost to multicast -> [making localhost to multicast, to serve all incoming requests instead… · lkravi/golang@e1c47c4 · GitHub](https://github.com/lkravi/golang/commit/e1c47c44b2389aa73c1ea8a5dce78181bf1ef105)
 
-Changing Docker file to multi-stage build -> [making localhost to multicast, to serve all incoming requests instead… · lkravi/golang@e1c47c4 · GitHub](https://github.com/lkravi/golang/commit/e1c47c44b2389aa73c1ea8a5dce78181bf1ef105)
+Changing Docker file to multi-stage build -> https://github.com/lkravi/golang/commit/8354e996bd2870ae2420e1219c64bd117bdb348a
 
 ## Test Golang app locally
 
